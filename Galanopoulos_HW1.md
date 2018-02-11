@@ -1,6 +1,6 @@
 # Data 608 - HW 1
 Georgia Galanopoulos  
-February 4, 2018  
+February 11, 2018  
 
 ```r
 library(knitr)
@@ -54,7 +54,7 @@ I have provided you with data about the 5,000 fastest growing companies in the U
 inc <- read.csv("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module1/Data/inc5000_data.csv", header= TRUE)
 ```
 
-And lets preview this data:
+And let's preview this data:
 
 
 ```r
@@ -143,7 +143,39 @@ sapply(inc, function(x){sum(length(which(is.na(x))))})
 
 ```r
 # Subset for NA values
-kable(inc[is.na(inc$Employees),])
+NAinc = inc[is.na(inc$Employees),]
+summary(NAinc)
+```
+
+```
+##       Rank                                    Name    Growth_Rate    
+##  Min.   : 183   Carolinas Home Medical Equipment:1   Min.   : 0.350  
+##  1st Qu.:1521   Excalibur Exhibits              :1   1st Qu.: 0.670  
+##  Median :2470   First Flight Solutions          :1   Median : 1.475  
+##  Mean   :2606   Global Communications Group     :1   Mean   : 3.408  
+##  3rd Qu.:4012   Heartland Business Systems      :1   3rd Qu.: 2.700  
+##  Max.   :4968   Higher Logic                    :1   Max.   :22.320  
+##                 (Other)                         :6                   
+##     Revenue                                  Industry   Employees  
+##  Min.   :  2700000   Business Products & Services:2   Min.   : NA  
+##  1st Qu.:  5025000   Food & Beverage             :2   1st Qu.: NA  
+##  Median :  9400000   Telecommunications          :2   Median : NA  
+##  Mean   : 35408333   Health                      :1   Mean   :NaN  
+##  3rd Qu.: 52275000   IT Services                 :1   3rd Qu.: NA  
+##  Max.   :156300000   Logistics & Transportation  :1   Max.   : NA  
+##                      (Other)                     :3   NA's   :12   
+##            City       State  
+##  Atlanta     :1   NC     :2  
+##  Bellevue    :1   WI     :2  
+##  Emerald Isle:1   CA     :1  
+##  Englewood   :1   CO     :1  
+##  Horsham     :1   DC     :1  
+##  houston     :1   GA     :1  
+##  (Other)     :6   (Other):4
+```
+
+```r
+kable(NAinc)
 ```
 
         Rank  Name                                Growth_Rate     Revenue  Industry                        Employees  City            State 
@@ -243,18 +275,20 @@ Create a graph that shows the distribution of companies in the dataset by State 
 
 
 ```r
-# Number of Companies by State
 ggplot(grsta, aes(x = reorder(State, n), y = n)) + 
   geom_histogram(stat="identity") + 
   coord_flip() + 
-  ylab("Companies")
+  ylab("Number of Companies") +
+  xlab("State")
 ```
 
 ```
 ## Warning: Ignoring unknown parameters: binwidth, bins, pad
 ```
 
-![](Galanopoulos_HW_1_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](Galanopoulos_HW1_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
+California, Texas and New York were the top three states with the highest number of companies per state, with California in the lead by a large margin.
 
 ## Quesiton 2
 
@@ -275,23 +309,23 @@ which(complete.cases(onlystate)!= T)
 ```
 
 ```r
-# Graph of Employment by Industry in NY
-ggplot(onlystate, aes(x = reorder(Industry, Employees, FUN = median), y = Employees)) + 
-  # boxplots show mean and range
-  geom_boxplot(outlier.shape = NA) +                                        # remove outliers
-  scale_y_continuous(limits = quantile(onlystate$Employees, c(0.1, 0.9))) + # shorten y-axis
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))+ 
+## Graph of Employment by Industry in NY
+# Remove extreme outliers
+outliers = onlystate$Employees %in% boxplot.stats(onlystate$Employees, coef = 1.5)$out
+outclean = onlystate[!outliers, ]
+
+# Boxplots to show range
+ggplot(outclean, aes(x = reorder(Industry, Employees, FUN = median, na.rm = TRUE), y = Employees)) + 
+  geom_boxplot()+ 
   ylab("Number of Employees") +
-  xlab("Industry")
+  xlab("Industry")+
+  coord_flip()
 ```
 
-```
-## Warning: Removed 62 rows containing non-finite values (stat_boxplot).
-```
+![](Galanopoulos_HW1_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
-![](Galanopoulos_HW_1_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+Extreme outliers have been removed, but the those within 2 standard deviations remained. Since the majority of the industries (especially in the lower end) are skewed, the median was chosen as a more appropriate parameter estimate of the number of employees per industry. Energy and Financial Services were the top two fields with the highest employees. Government Services and Retail were the bottom two. Industries with impressive ranges of employees were Software and Financial Services.
 
-The "Environmental Services" employ the most people on average, followed closely by "Energy". On the other hand, "Health", "IT Services" and "Telecommunications" have the most impressive ranges.
 
 ## Question 3
 
@@ -308,19 +342,24 @@ RPE = noNA %>% mutate(RevPerEmp = Revenue/Employees)
 ```
 
 ```r
+# Remove extreme outliers
+RPEoutliers = RPE$RevPerEmp %in% boxplot.stats(RPE$RevPerEmp, coef = 1.5)$out
+RPEoutclean = RPE[!RPEoutliers, ]
+
 # Revenue/Employee vs Industry
-ggplot(RPE, aes(x = reorder(Industry, RevPerEmp, FUN = mean), y = RevPerEmp)) + 
-         geom_boxplot(outlier.shape = NA) +
-         ylab("Revenue per Employee") + 
-         xlab("Industry") +
-         scale_y_continuous(limits = quantile(RPE$RevPerEmp, c(0.1, 0.9)))  +
-         theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggplot(RPEoutclean, aes(x = reorder(Industry, RevPerEmp, FUN = mean), y = RevPerEmp)) + 
+  geom_boxplot(outlier.shape = NA) +
+  ylab("Revenue per Employee") + 
+  xlab("Industry")+
+  coord_flip()+
+  stat_summary(fun.y=mean, colour="blue", geom="point", show_guide = FALSE)
 ```
 
 ```
-## Warning: Removed 997 rows containing non-finite values (stat_boxplot).
+## Warning: `show_guide` has been deprecated. Please use `show.legend`
+## instead.
 ```
 
-![](Galanopoulos_HW_1_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](Galanopoulos_HW1_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-It appears that the "Logistics & Transporation" industry generates the most revenue per employee, followed closely by "Retail" and "Computer Hardware".
+The boxplots here were orderd by mean rather than median because they majority of them appear to be normally distributed. It appears that the "Computer Hardware" industry generates the most revenue per employee, followed by "Logistics & Transporation" and "Retail". The majority of the industries have an impressive range, though. Human Resources, despite having one of the lowest means, has has the largest range of the bottom five industries.
