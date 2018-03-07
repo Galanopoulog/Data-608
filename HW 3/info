@@ -1,0 +1,16 @@
+# Overall:
+# Must use 'shiny' package
+# Maybe use plotly or vegalite
+# Must submit 4 files: 2 'ui.R' and 2 'server.R'
+
+
+# Question 1
+# Compare mortality rates from particular causes across the US.
+# Visualization of crude mortality rates across all states from one cause (for 2010 only).
+# Visualization that allows to rank states by crude mortality for each cause of death.
+
+
+# Question 2
+# Are states improving mortality rates (per cause) faster/slower than national average?
+# Visualization for one cause of death at a time.
+# National average should be weighted average by the national population.
