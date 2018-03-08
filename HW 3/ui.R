@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 
+
 # Overall:
 # Must use 'shiny' package
 # Maybe use plotly or vegalite
@@ -9,29 +10,24 @@ library(dplyr)
 
 
 mortality = read.csv(url("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module3/data/cleaned-cdc-mortality-1999-2010-2.csv"))
-AvgMort = aggregate(cbind(Deaths, Population) ~ ICD.Chapter + Year, mortality, FUN=sum) %>%
-  mutate(NatAvg = round(NatAvg$Deaths / NatAvg$Population * 500000, 4))
-merged = merge(mortality, AvgMort[,-c(3:4)], by=c("ICD.Chapter","Year"))
+mort10 = subset(mortality, mortality$Year == 2010)
 
-# Question 2
-# Are states improving mortality rates (per cause) faster/slower than national average?
-# Visualization for one cause of death at a time.
-# National average should be weighted average by the national population.
+# Question 1
+# Compare mortality rates from particular causes across the US.
+# Visualization of crude mortality rates across all states from one cause (for 2010 only).
+# Visualization that allows to rank states by crude mortality for each cause of death.
 
 
 shinyUI(pageWithSidebar(
   # Title
-  headerPanel("CDC Mortality Rates Across States vs National Average"),
+  headerPanel("CDC Mortality Rates for 2010 Across States"),
   # Side Selection Bar
   fluidPage(
-    selectInput("Chapters", "Type of Disease:", unique(merged$ICD.Chapter)),
-    selectInput("State", "State:", unique(merged$State)),
-    p(strong("Red Line = National Average")),
-    p(strong("Black Line = Crude Mortality Rate"))
+    selectInput("Chapters", "Type of Disease:", unique(mort10$ICD.Chapter))
   ),
   # Create Histogram Plot
   mainPanel(
-    plotOutput("plot"),
+    plotOutput("hist"),
     tableOutput("Top10")
   )
 ))
