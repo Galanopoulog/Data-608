@@ -1,28 +1,30 @@
-# Question 1
-# Compare mortality rates from particular causes across the US.
-# Visualization of crude mortality rates across all states from one cause (for 2010 only).
-# Visualization that allows to rank states by crude mortality for each cause of death.
+# Question 2
+# Are states improving mortality rates (per cause) faster/slower than national average?
+# Visualization for one cause of death at a time.
+# National average should be weighted average by the national population.
 
-shinyServer(function(input, output) {
-  output$hist = renderPlot({
-    # generate a State vs Crude.Rate plot
-    data = mort10 %>% filter(mort10$ICD.Chapter == input$Chapters)
-    ggplot(data, aes(x=reorder(State, -Crude.Rate), y=Crude.Rate)) +
-      geom_bar(stat="identity", fill="steelblue") +
-      geom_text(aes(label=Crude.Rate), vjust=1.6, color="white", size=3) +
-      xlab("State") +
-      theme_minimal()
+shinyServer(function(input, output, session) {
+  # filtering reactive data
+  picking = reactive({
+    data = merged %>% filter(merged$ICD.Chapter == input$Chapters, merged$State == input$State)
+  })
+  
+  output$plot = renderPlot({
+    data = merged %>% filter(merged$ICD.Chapter == input$Chapters, merged$State == input$State)
+
+    # generate a Year vs Mortality Rate plot
+    ggplot(picking(), aes(x=Year, y=Crude.Rate)) +
+      geom_line() +
+      geom_line(data = picking(), aes(x=Year, y=NatAvg, color = "red"))
   })
   
   # Top 10 States Table
   output$Top10 = renderTable({
-    data = mort10 %>% filter(mort10$ICD.Chapter == input$Chapters)
-    data2 = data[with(data,order(-Crude.Rate)),]
-    data2[1:10, c(-1,-3)]
+    data = merged %>% filter(merged$ICD.Chapter == input$Chapters, merged$State == input$State)
+    data2 = data[with(data, order(-Crude.Rate)),]
+    data2[1:10, -c(1,3)]
   },
-  caption = "TOP 10 STATES",
+  caption = "STATE MORTALITY TABLE",
   caption.placement = getOption("xtable.caption.placement", "top")
   )
 })
-
-
