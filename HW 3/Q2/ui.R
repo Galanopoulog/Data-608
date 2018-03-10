@@ -10,7 +10,7 @@ library(dplyr)
 
 mortality = read.csv(url("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module3/data/cleaned-cdc-mortality-1999-2010-2.csv"))
 AvgMort = aggregate(cbind(Deaths, Population) ~ ICD.Chapter + Year, mortality, FUN=sum) %>%
-  mutate(NatAvg = round(NatAvg$Deaths / NatAvg$Population * 500000, 4))
+  mutate(NatAvg = round(Deaths / Population * 500000, 4))
 merged = merge(mortality, AvgMort[,-c(3:4)], by=c("ICD.Chapter","Year"))
 
 # Question 2
