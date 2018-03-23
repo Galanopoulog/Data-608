@@ -1,0 +1,26 @@
+
+                          Background:
+Enterococcus = fecal indicating bacteria. Lives in the intestines of humans
+and other warm-blooded animals. The counts are useful as a water
+quality indicator (low abundance in sewage-free environments). 
+
+EPA reports counts as colonies (or cells) per 100ml of water.
+Standard for unacceptable water quality is:
+1) A single sample value > 110 Enterococcus/100 mL or
+2) Five or more samples with a weighted average > 30 Enterococcus/100 mL.
+
+
+                           Question 1:
+For Kayak Enthusiasts:
+Create an app that recommends launch sites to users. Allows a user to pick a 
+date and will give its recommendations for that particular date. Use federal 
+guidelines above (may still need to make some assumptions about sites). 
+Include some information explaining why a particular site is flagged as unsafe.
+
+
+
+                            Question 2:
+For Scientists:
+Would like to know if there’s a relationship between amount of rain and water 
+quality. App allows researchers to pick sites and compare this relationship.
+
