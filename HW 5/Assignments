@@ -7,7 +7,7 @@ Refer to 'js_in_webpage.html' file on github for instructions.
 Create function that reverses any word typed in (either an input or alert box).
 Print result in a box or on the webpage.
 
-Create function that takes input number and prints an table with the first
+Create function that takes input number and prints a table with the first
 20 multiples of the number (ordered, 5x4).
 
 
