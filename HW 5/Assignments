@@ -1,12 +1,19 @@
-Assignment 1
+HTML page form. Run locally. Two or more functions on one HTML page.
 
 
+--- Assignment 1: Beginner ---
+
+Create function that reverses any word typed in (either an input or alert box).
+Print result in a box or on the webpage.
+
+Create function that takes input number and prints an table with the first
+20 multiples of the number (ordered, 5x4).
 
 
+--- Assignment 2: Intermediate ---
+Load the presidents.csv data. Display data as html table (cdv parser or any
+available library, but a d3 one is encouraged).
 
+Create function that will return president's height and weight when typed in
+(either an input or alert box). Print result in a box or on the webpage.
 
-
-
-
-
-Assignment 2
