@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Data 608 - Module 5</title>
+        <h1>Data 608 - Module 5</h1>
+        <h3>Georgia Galanopoulos</h3>
+    </head>
+
+    <body>
+        <h2>Beginner</h2>
+        <p><strong>Function 1: Reverses the word typed into input box.</strong></p>
+        
+        <input type="text" id="word" placeholder="Enter word here...">
+        <button id="reversing">Reverse</button>
+        <div id="FINALword"></div>
+
+        <script type="text/javascript">
+            var clicking = document.getElementById("reversing");
+            var result = document.getElementById("FINALword");
+
+            var reverse = function(string) {
+                result.innerHTML =("Your word, reversed: " + string.split("").reverse().join(""));
+            }
+
+            clicking.onclick = function() {
+                var inword = document.getElementById("word").value;
+                reverse(inword);
+            }
+         </script>
+
+
+        <p><strong>Function 2: Takes input number and prints table with the first 20 multiples.</strong></p>
+
+        <input type="number" id="num" placeholder="Enter number here..." step=".01">
+        <button id="creating" onclick="returnall()">Create Table</button>
+        <div id="FINALnum"></div>
+        <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        </style>
+
+        <table style="width:100%">
+        <button onclick="deleteRow()">Delete Row</button>
+        <script type="text/javascript">
+
+            function returnall() {
+                var arr = new Array();
+                for (var i = 1; i < 21; i++) {
+                    arr.push(i);
+                }
+                function multiplying(num){
+                    return Math.round(num * document.getElementById("num").value*100) / 100;
+                }
+                var data = arr.map(multiplying);
+                var table = document.createElement("table");
+                var i = 0;
+                for (var rows = 0; rows < 5; rows++) {
+                  var row = table.insertRow(-1);
+                  for (var cols = 0; cols < 4; cols++) {
+                    var cell = row.insertCell(-1);
+                    cell.appendChild(document.createTextNode(data[i++]));
+                  }
+            }
+                document.body.appendChild(table);
+                }
+        </script>
+        </table>
+    <body>
+</html>
