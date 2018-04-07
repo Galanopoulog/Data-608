@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Data 608 - Module 5</title>
+        <h1>Data 608 - Module 5</h1>
+        <h3>Georgia Galanopoulos</h3>
+    </head>
+
+    <body>
+        
+        <h2>Intermediate</h2>
+        <p><strong>Function 1: Load the presidents.csv data and display as html table.</strong></p>
+    <style>
+    table, th, td {
+        border: 1px solid black;
+    }
+    </style>
+
+    <table id="presidentTable" style="width:100%">
+    <tbody id="tbody"></tbody>
+    </table>
+
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            url = "https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module5/js_examples/Hello%20World/data/presidents.csv"
+
+            d3.csv(url, function(error,data){
+                    console.log(error);
+                    console.log(data);
+
+                    var newData = data.map(function(d){
+                        return{
+                            Name: d.Name,
+                            Height: +d.Height,
+                            Weight: +d.Weight
+                        };
+                    });
+            console.table(newData);
+
+
+            function makeTable(body) {
+                var tr;
+                var td;
+                var body = document.getElementById("tbody");
+                var colNames = Object.getOwnPropertyNames(newData[0]);
+                var colCount = colNames.length;
+
+                var row = body.insertRow(-1);
+                for (var i = 0; i < colCount; i++) {
+                    var header = document.createElement("new");
+                    header.innerHTML = colNames[i];
+                    row.appendChild(header);
+                }
+
+                for (var i = 0; i < newData.length; i++) {
+                    tr = body.insertRow(body.rows.length);
+                    td = tr.insertCell(tr.cells.length);
+
+                    for(var key in newData[i])
+                    {
+                        td.innerHTML = newData[i][key];
+                        td = tr.insertCell(tr.cells.length);
+                    }
+                    
+                }
+            }
+            makeTable("tbody");
+        });
+
+    </script>
+
+
+
+
+        <p><strong>Function 2: Type in President and return their height and weight. </strong></p>
+
+        <select class="form-control" id="dropdown"></select>
+
+        <script type="text/javascript">
+
+
+    </script>
+    </body>
+
+</html>
+
