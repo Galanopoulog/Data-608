@@ -11,7 +11,7 @@
         
         <h2>Intermediate</h2>
         <p><strong>Function 1: Load the presidents.csv data and display as html table.</strong></p>
-        
+
     <style>
     table, th, td {
         border: 1px solid black;
@@ -73,13 +73,53 @@
 
         <p><strong>Function 2: Type in President and return their height and weight. </strong></p>
 
-        <select class="form-control" id="dropdown"></select>
-
+        <input type="text" id="presname" placeholder="Enter President here...">
+        <button id="HeightWeight">Return Height and Weight</button>
+        <div id="Final"></div>
         <script type="text/javascript">
 
+            var print = document.getElementById("HeightWeight");
+            var PresEntry = document.getElementById("presname");
+            var result = document.getElementById("Final");
+
+            d3.csv(url, function(error,data){
+                console.log(error);
+                console.log(data);
+
+                var newData = data.map(function(d){
+                     return{
+                        Name: d.Name,
+                        Height: +d.Height,
+                        Weight: +d.Weight                        
+                    };
+                });
+
+
+            var ok = d3.csv(url, function(data) {
+                for (var i=0; i<data.length; i++) {
+                    console.log(data[i].Name+": "+data[i].Height+" inches, "+data[i].Weight+" pounds.");
+                    }
+                });
+
+            var index = function(data) {
+                for (var i=0; i<data.length; i++) {
+                    if(PresEntry == data[i,1]){
+                        ind = data[i].rowIndex;
+                        return ind;
+                    } else{
+                        ind = 3;
+                        return ind;
+                    }
+                }
+            };
+
+            print.onclick = function() {
+                var ind2 = index(newData);
+                result.innerHTML =(ok[ind2]);
+            };
+        });
 
     </script>
     </body>
 
 </html>
-
