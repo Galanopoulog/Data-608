@@ -1,0 +1,12 @@
+Assignment 6 Description:
+
+Create some preliminary graphs for your final project.
+It is encouraged to attempt to use javascript (Javascript libraries include: d3 or plotly).
+Material submitted in either dash or shiny will be accepted if that's what will be used.
+
+Resources:
+
+The original csv files were drawn from:
+  1. Global Health Data Exchange website (http://ghdx.healthdata.org/gbd-results-tool) and
+  2. Gun Violence Archive website (http://www.gunviolencearchive.org/reports/total-number-of-incidents)
+and then manipulated/simplified in order to create the plot and choropleth map.
