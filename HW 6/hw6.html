@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<head>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+	<body>
+		<div id="bubbleplots">
+			<div class="bubbleplot" data-num="0">
+			<div class="plot" id="Plot"></div>
+			Location: <select class="LocationInfo"></select>
+			</div>
+		</div>
+
+
+		<script>
+		Plotly.d3.csv('https://raw.githubusercontent.com/Galanopoulog/Data-608/master/HW%206/Percents.csv', function(err, rows){
+
+			function unpack(rows, key) {
+				return rows.map(function(row) { return row[key]; });
+			}
+
+			var allLocations = unpack(rows, 'location'),
+				allYears = unpack(rows, 'year'),
+				allPercents = unpack(rows, 'percent'),
+				LocationList = [],
+				PercentList = [],
+				YearList = [];
+
+			for (var i = 0; i < allLocations.length; i++ ){
+				if (LocationList.indexOf(allLocations[i]) === -1 ){
+					LocationList.push(allLocations[i]);
+				}
+			}
+
+			function pickPlace(place) {
+				PercentList = [];
+				YearList = [];
+				for (var i = 0 ; i < allLocations.length ; i++){
+					if ( allLocations[i] === place ) {
+						PercentList.push(allPercents[i]);
+						YearList.push(allYears[i]);
+					}
+				}
+			};
+
+
+			function BubblePlot(place) {
+				pickPlace(place);  
+
+				var trace1 = {
+					x: YearList,
+					y: PercentList,
+					mode: 'lines+markers'
+				};
+
+				var data = [trace1];
+
+				var layout = {
+					title: 'Percent Deaths of Gun Incidents by Year <br>'+ place + ' Fatalities'
+				};
+
+				Plotly.newPlot('Plot', data, layout);
+			};
+
+			BubblePlot('United States');
+
+			var within = document.querySelector('[data-num="0"'),
+				plotEl = within.querySelector('.plot'),
+				pickedPlace = within.querySelector('.LocationInfo');
+
+			function assignOptions(array1, choose) {
+				for (var i = 0; i < array1.length;  i++) {
+					var now = document.createElement('option');
+					now.text = array1[i];
+					choose.appendChild(now);
+				}
+			}
+
+			assignOptions(LocationList, pickedPlace);
+
+			function updatePlace(){
+				BubblePlot(pickedPlace.value);
+			}
+
+			pickedPlace.addEventListener('change', updatePlace, false);
+		});
+		</script>
+	</body>
+
+	<p>The data for the United States is only up to the year 2016, so Choropleth maps of the States have been created below to show through colors the states in which death and injuries due to gun violence were prevolent the year of 2017.</p>
+
+	<body>
+		<div id="DivKill"></div>
+		<script>
+		Plotly.d3.csv('https://raw.githubusercontent.com/Galanopoulog/Data-608/master/HW%206/newguns2017.csv', function(err, rows){
+			function unpack(rows, key) {
+				return rows.map(function(row) { return row[key]; });
+			}
+
+			var data = [{
+				type: 'choropleth',
+				locationmode: 'USA-states',
+				locations: unpack(rows, 'Code'),
+				z: unpack(rows, 'TotKill'),
+				text: unpack(rows, 'State'),
+				zmin: 0,
+				zmax: 25,
+				colorbar: {
+					title: 'Number Killed'
+				},
+				marker: {
+					line:{
+						color: 'rgb(155,155,155)',
+						width: 1
+					}
+				}
+			}];
+
+			console.log(data.locations);
+				var layout = {
+					title: '2017 - Gun Violence Fatalities',
+					geo:{
+						scope: 'usa'
+					}
+				};
+			Plotly.plot(DivKill, data, layout, {showLink: false});
+		});
+		</script>
+
+		<div id="DivInj"></div>
+		<script>
+		Plotly.d3.csv('newguns2017.csv', function(err, rows){
+				function unpack(rows, key) {
+					return rows.map(function(row) { return row[key]; });
+				}
+
+			var data = [{
+				type: 'choropleth',
+				locationmode: 'USA-states',
+				locations: unpack(rows, 'Code'),
+				z: unpack(rows, 'TotInj'),
+				text: unpack(rows, 'State'),
+				zmin: 0,
+				zmax: 25,
+				colorbar: {
+					title: 'Number Injured'
+				},
+				marker: {
+					line:{
+						color: 'rgb(155,155,155)',
+						width: 1
+					}
+				}
+			}];
+
+			console.log(data.locations);
+				var layout = {
+					title: '2017 - Gun Violence Injuries',
+					geo:{
+						scope: 'usa'
+					}
+				};
+
+			Plotly.plot(DivInj, data, layout, {showLink: false});
+		});
+		</script> 
+
+		<div id="DivOther"></div>
+		<script>
+
+		</script>
+	</body>
+
+</html>
