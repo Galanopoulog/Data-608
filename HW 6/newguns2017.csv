@@ -1,0 +1,49 @@
+Code,State,TotKill,TotInj
+AL,Alabama,3,12
+AK,Alaska,1,0
+AZ,Arizona,0,1
+AR,Arkansas,1,6
+CA,California,22,13
+CO,Colorado,4,10
+CT,Connecticut,1,2
+DE,Delaware,1,1
+DC,District of Columbia,3,4
+FL,Florida,8,22
+GA,Georgia,5,7
+HI,Hawaii,0,0
+ID,Idaho,0,0
+IL,Illinois,4,24
+IN,Indiana,3,4
+IA,Iowa,0,2
+KS,Kansas,2,2
+KY,Kentucky,1,5
+LA,Louisiana,4,13
+ME,Maine,0,0
+MD,Maryland,2,7
+MA,Massachusetts,1,4
+MI,Michigan,1,4
+MN,Minnesota,1,1
+MS,Mississippi,5,6
+MO,Missouri,4,7
+MT,Montana,0,1
+NE,Nebraska,0,0
+NV,Nevada,5,1
+NH,New Hampshire,0,0
+NJ,New Jersey,7,3
+NM,New Mexico,0,0
+NY,New York,2,7
+NC,North Carolina,5,11
+OH,Ohio,10,4
+OK,Oklahoma,2,5
+OR,Oregon,0,2
+PA,Pennsylvania,2,4
+SC,South Carolina,6,5
+SD,South Dakota,0,0
+TN,Tennessee,5,10
+TX,Texas,17,9
+UT,Utah,2,1
+VA,Virginia,8,6
+WA,Washington,3,2
+WV,West Virginia,1,5
+WI,Wisconsin,2,1
+,,,
