@@ -1,0 +1,12 @@
+The datasets used incorporate gun violence from within and outside the United States.
+
+1) For the global data, the Global Health Data Exchange website was used
+(http://ghdx.healthdata.org/gbd-results-tool)
+This website catalogs censuses and surveys to record and analyze health-related data and vital statistics regarding a country.
+The parameters used from this website will include percentages, rates and number of incidents from ages 1-94 where death from firearms 
+was the result (either unintentionally, intentionally or due to self-harm) from the years of 2007 to 2016.
+
+2) For data regarding the United States, the Gun Violence Archive website was used
+(http://www.gunviolencearchive.org/reports/total-number-of-incidents)
+This non-profit corporation collects and checks data regarding gun-related violence within the U.S. and records the location, 
+the incident’s date, the number of injured and killed in addition to a link to the report with details regarding the event.
