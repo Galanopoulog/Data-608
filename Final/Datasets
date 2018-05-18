@@ -10,4 +10,5 @@ is split into 3 csv files.
 2) For data regarding the United States, the Gun Violence Archive website was used
 (http://www.gunviolencearchive.org/reports/total-number-of-incidents)
 This non-profit corporation collects and checks data regarding gun-related violence within the U.S. and records the location, 
-the incident’s date, the number of injured and killed in addition to a link to the report with details regarding the event.
+the incident’s date, the number of injured and killed in addition to a link to the report with details regarding the event. This
+dataset includes incidents from the year 2014 to early May of 2018.
