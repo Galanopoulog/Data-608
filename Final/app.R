@@ -25,7 +25,7 @@ usData$Year = as.numeric(format(usData$Incident.Date, format = "%Y"))
 usData$Month = as.factor(format(usData$Incident.Date, format = "%m"))
 usData$Day = as.factor(format(usData$Incident.Date, format = "%d"))
 
-# Remove outlier
+# Remove outlier(Nevada Shooting)
 us = usData[-15037,]
 
 ### GLOBAL DATASET ###
@@ -34,12 +34,12 @@ two = read.csv("https://raw.githubusercontent.com/Galanopoulog/Data-608/master/F
 three = read.csv("https://raw.githubusercontent.com/Galanopoulog/Data-608/master/Final/WorldwideGunData_3.csv", header = T)
 world = do.call("rbind", list(one, two, three))
 
-
+# Use only percentages (for a uniform metric)
 worlds = subset(world, metric == "Percent") %>% 
   group_by(location, year) %>% summarise(percent = sum(val))
 
 ################################################################
-################################################################
+########################    SHINY APP   ########################
 ################################################################
 
 ui = fluidPage(
@@ -47,25 +47,28 @@ ui = fluidPage(
    # Title
    titlePanel("Gun Violence"),
    
-   # Slider
+   # INPUTS
    sidebarLayout(
       sidebarPanel(
+        
         # US INPUTS
+        # Slider (Years)
          sliderInput("year",
                      "US Years:",
                      min = min(us$Year),
                      max = max(us$Year),
                      value = min(us$Year),
                      animate = TRUE,
-                     sep= ""
-         ),
-        
+                     sep= "")
+        ,
+        # Select (Killed/Injured)
         selectInput("status", 
                     label = "Choose Status:",
                     choices = c("Killed", "Injured"),
                     selected = "Killed")
         ,
         # GLOBAL INPUTS
+        # Slider (Years)
         sliderInput("globyears",
                     "Global Years:",
                     round = TRUE,
@@ -74,11 +77,13 @@ ui = fluidPage(
                     value = min(world$year),
                     animate = TRUE,
                     sep= "",
-                    ticks = TRUE
-        ),
+                    ticks = TRUE)
+        ,
+        # Select (Location)
         selectInput("location", "Location:", choices = unique(worlds$location)),
         
         # STATS INPUTS
+        # Pick which variables to transform
         radioButtons("logs", "Variable Transformation:", choices = c("None", 
                                                                     "Log(Physical Violence)", 
                                                                     "Log(Self-Harm)",
@@ -88,7 +93,7 @@ ui = fluidPage(
       # Show plot
       mainPanel(
         
-        # Output: Tabset w/ plot, summary, and table ----
+        # Output: Tabset w/ plots, table and reference link
         tabsetPanel(type = "tabs",
                     tabPanel("United States", plotOutput("us1"), plotOutput("us2"), plotOutput("usOverall")),
                     tabPanel("Global", plotOutput("glob1"), plotOutput("glob2")),
@@ -117,6 +122,7 @@ server = function(input, output) {
     subset(world, metric == "Percent" & year == input$globyears, select = c(location, val))
   })
   
+  # OUTPUTS/PLOTS
   # US PLOTS
   output$us1 = renderPlot({
     us2 = usdata() %>% group_by(State) %>% summarise(Kill = sum(Killed), Inj = sum(Injured))
@@ -149,7 +155,7 @@ server = function(input, output) {
      }
    })
    output$usOverall = renderPlot({   
-     sums2 = usData[-15037,]#subset(us, select = c("Year", "Month", "Killed", "Injured")) %>% group_by(Incident.Date) %>% summarise(kill = sum(Killed), inj = sum(Injured))
+     sums2 = usData[-15037,]
      if(input$status == "Killed"){
        ggplot(sums2, aes(Month, Day )) +
          geom_tile(aes(fill = Killed), color = "white") +
@@ -246,7 +252,17 @@ server = function(input, output) {
          ylab("Log(Physical Violence)")
      }
    })
-   
+  
+   # References
+   output$refs = renderPrint({
+     h5("GunViolence website (US Data):", a("http://www.gunviolencearchive.org/reports/total-number-of-incidents", href="http://www.gunviolencearchive.org/reports/total-number-of-incidents"))
+   }) 
+   output$refs2 = renderPrint({
+     h5("Global Health Data Exchange website (Global Data):", a("http://ghdx.healthdata.org/gbd-results-tool", href="http://ghdx.healthdata.org/gbd-results-tool"))
+   })
+   output$refs3 = renderPrint({
+     h5("GitHub:", a("Link to R code", href="https://github.com/Galanopoulog/Data-608/blob/master/Final/app.R"))
+   })
 }
 
 # Run the app
